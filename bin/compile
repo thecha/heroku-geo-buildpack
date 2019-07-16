@@ -32,6 +32,7 @@ function indent() {
 }
 
 function manifest_version() {
+  echo "http://${S3_BUCKET}.s3.amazonaws.com/${STACK}/manifest.${1}" 
   curl "http://${S3_BUCKET}.s3.amazonaws.com/${STACK}/manifest.${1}" -s -o - | head -n 1
 }
 
