@@ -33,7 +33,6 @@ function indent() {
 }
 
 function manifest_version() {
-  echo "http://${S3_BUCKET}.s3.amazonaws.com/${STACK}/manifest.${1}" 
   curl "http://${S3_BUCKET}.s3.amazonaws.com/${STACK}/manifest.${1}" -s -o - | head -n 1
 }
 
@@ -44,6 +43,7 @@ function download_package() {
 
   mkdir -p $location
   package="https://${S3_BUCKET}.s3.amazonaws.com/${STACK}/$name-$version.tgz"
+  echo "Package ${package}"
   curl $package -s -o - | tar xzf - -C $location
 }
 
@@ -73,26 +73,26 @@ VENDORED_PROJ="vendor/proj/$PROJ_VERSION"
 # Make sure cache dir exists
 mkdir -p $CACHE_DIR
 
-#if [ ! -d $CACHE_DIR/$VENDORED_GEOS ]; then
+if [ ! -d $CACHE_DIR/$VENDORED_GEOS ]; then
   echo "${CACHE_DIR}/${VENDORED_GEOS}"
   echo "-----> Fetching and vendoring geos"
   rm -rf "$CACHE_DIR/vendor/geos"
   download_package "geos" "${GEOS_VERSION}" "${CACHE_DIR}/${VENDORED_GEOS}"
-#fi
+fi
 
-#if [ ! -d $CACHE_DIR/$VENDORED_GDAL ]; then
+if [ ! -d $CACHE_DIR/$VENDORED_GDAL ]; then
   echo "${CACHE_DIR}/${VENDORED_GDAL}"
   echo "-----> Fetching and vendoring gdal"
   rm -rf "$CACHE_DIR/vendor/gdal"
   download_package "gdal" "${GDAL_VERSION}" "${CACHE_DIR}/${VENDORED_GDAL}"
-#fi
+fi
 
-#if [ ! -d $CACHE_DIR/$VENDORED_PROJ ]; then
+if [ ! -d $CACHE_DIR/$VENDORED_PROJ ]; then
   echo "${CACHE_DIR}/${VENDORED_PROJ}"
   echo "-----> Fetching and vendoring proj"
   rm -rf "$CACHE_DIR/vendor/proj"
   download_package "proj" "${PROJ_VERSION}" "${CACHE_DIR}/${VENDORED_PROJ}"
-#fi
+fi
 
 TARGET_VENDOR_DIR=".heroku/vendor"
 # Copy artifacts out of cache if exists.
