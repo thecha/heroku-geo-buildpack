@@ -16,6 +16,7 @@ S3_BUCKET=${HEROKU_GEO_BUILDBACK_S3_BUCKET:-"heroku-buildpack-geo"}
 # Parameters
 BUILD_DIR=$1
 CACHE_DIR="${2}/${STACK}"
+STACK="heroku-16"
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 
 # Setup profile file
